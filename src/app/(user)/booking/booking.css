@@ -1,0 +1,27 @@
+.booking-page {
+  padding: 60px 0;
+  display: flex;
+  justify-content: center;
+  background: #faf7f2;
+}
+
+.booking-card {
+  width: 90%;
+  max-width: 600px;
+  padding: 40px 30px;
+  border-radius: 18px;
+  background: #ffffff;
+}
+
+.title {
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #2c2c2c;
+  text-align: center;
+}
+
+.subtitle {
+  text-align: center;
+  margin-bottom: 32px;
+  color: #7a7a7a;
+}
