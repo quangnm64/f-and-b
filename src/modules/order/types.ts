@@ -4,9 +4,8 @@ export interface OrderItem {
   id: string;
   name: string;
   price: number;
-  qty: number;
-  image: string;
   quantity: number;
+  image: string;
 }
 
 export interface OrderPayload {
