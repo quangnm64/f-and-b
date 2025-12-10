@@ -23,13 +23,17 @@ export default function CheckoutForm() {
     e.preventDefault();
     setLoading(true);
 
-    const payload = {
-      customer: values,
-      items,
-      total,
-    };
+    
+    const formData = new FormData();
+    
+    // 2. Thêm dữ liệu phức tạp (customer, items) dưới dạng JSON string
+    formData.append('customer', JSON.stringify(values));
+    formData.append('items', JSON.stringify(items));
 
-    const res = await createOrderAction(payload);
+    // 3. Thêm dữ liệu đơn giản (total)
+    // Cần đảm bảo total là chuỗi
+    formData.append('total', total.toString());
+    const res = await createOrderAction(formData);
 
     setLoading(false);
     alert(res.message);

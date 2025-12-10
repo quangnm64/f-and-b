@@ -4,8 +4,9 @@
 import React from 'react';
 import { Box, Typography, Button, Card, CardMedia, CardContent, Stack } from '@mui/material';
 import Link from 'next/link';
-import { dishes as mockDishes, Dish } from '@/data/dishes';
+import  dishes  from '@/data/dishes';
 import { useRouter } from 'next/navigation';
+import { Dish } from '@/modules/menu/types';
 
 type Props = {
   items?: Dish[];
@@ -15,7 +16,7 @@ function formatCurrency(v: number) {
   return v.toLocaleString('vi-VN') + '₫';
 }
 
-export default function FeaturedDishes({ items = mockDishes }: Props) {
+export default function FeaturedDishes({ items = dishes }: Props) {
   const router = useRouter();
 
   return (
@@ -37,7 +38,7 @@ export default function FeaturedDishes({ items = mockDishes }: Props) {
               />
               <CardContent>
                 <Typography variant="h4" sx={{ fontSize: '1rem', fontWeight: 700 }}>{d.name}</Typography>
-                <Typography variant="body2" sx={{ mt: 1, color: 'var(--muted)' }}>{d.short}</Typography>
+                {/* <Typography variant="body2" sx={{ mt: 1, color: 'var(--muted)' }}>{d.short}</Typography> */}
 
                 <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mt: 2 }}>
                   <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>{formatCurrency(d.price)}</Typography>

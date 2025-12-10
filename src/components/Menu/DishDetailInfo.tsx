@@ -2,13 +2,13 @@
 
 import React from 'react';
 import { Box, Typography, Button, Stack } from '@mui/material';
-import { Dish } from '@/data/dishes';
+import { Dish } from '@/modules/menu/types';
 
 export default function DishDetailInfo({ dish }: { dish: Dish }) {
   return (
     <Box>
       <Typography variant="h2">{dish.name}</Typography>
-      <Typography sx={{ color: 'var(--muted)', mt: 1 }}>{dish.category}</Typography>
+      <Typography sx={{ color: 'var(--muted)', mt: 1 }}>{dish.categoryId}</Typography>
 
       <Typography variant="h4" sx={{ mt: 2, fontWeight: 700 }}>
         {dish.price.toLocaleString('vi-VN')}₫

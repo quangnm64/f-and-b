@@ -5,7 +5,7 @@ export const orderItemSchema = z.object({
   id: z.string(),
   name: z.string(),
   price: z.number().min(0),
-  qty: z.number().min(1),
+  quantity: z.number().min(1),
   image: z.string(),
 });
 
