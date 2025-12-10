@@ -4,7 +4,7 @@ import { saveOrderToLocal } from "@/lib/localStorage";
 import { OrderItem, OrderPayload, OrderResponse } from "./types";
 
 export const calculateTotal = (items: OrderItem[]): number => {
-  return items.reduce((sum, item) => sum + item.price * item.qty, 0);
+  return items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 };
 
 export const buildOrderPayload = (items: OrderItem[], note: string, paymentMethod: "cash" | "momo" | "vnpay", userId?: string): OrderPayload => {

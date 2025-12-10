@@ -74,10 +74,10 @@ export default function CheckoutPage() {
                 </ListItemAvatar>
                 <ListItemText
                   primary={item.name}
-                  secondary={`Số lượng: ${item.qty} × ${item.price.toLocaleString()}đ`}
+                  secondary={`Số lượng: ${item.quantity} × ${item.price.toLocaleString()}đ`}
                 />
                 <Typography fontWeight={600}>
-                  {(item.price * item.qty).toLocaleString()}đ
+                  {(item.price * item.quantity).toLocaleString()}đ
                 </Typography>
               </ListItem>
             ))}
