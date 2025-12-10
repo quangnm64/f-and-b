@@ -1,62 +1,93 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { Card, CardMedia, CardContent, Typography, Stack, Button } from '@mui/material';
-import { useRouter } from 'next/navigation';
-import { Dish } from '@/modules/menu/types';
+import React from "react";
+import {
+  Card,
+  CardMedia,
+  CardContent,
+  Typography,
+  Stack,
+  Button,
+  Box,
+} from "@mui/material";
+import { useRouter } from "next/navigation";
+import { Dish } from "@/modules/menu/types";
+import { useOrder } from "@/context/OrderContext"; // ⭐ cần đúng path của bạn
 
 export default function DishCard({ dish }: { dish: Dish }) {
   const router = useRouter();
+  const { addItem } = useOrder();
+
+  const handleAddToCart = () => {
+    addItem({
+      id: dish.id,
+      name: dish.name,
+      price: dish.price,
+      quantity: 1,
+      image: dish.image,
+    });
+  };
 
   return (
     <Card
-      className="dish-card-item"
       sx={{
-        // ⭐️ 1. Đảm bảo chiếm 100% chiều cao của Box cha (Grid Item)
-        height: '100%', 
-        // ⭐️ 2. Loại bỏ các thuộc tính width cố định, để Grid/Flex cha quản lý
-        width: '100%', 
-        
-        cursor: 'pointer',
-        display: 'flex', // Để nội dung bên trong có thể co giãn
-        flexDirection: 'column',
-        borderRadius: 4, // Đặt độ bo góc 4 để khớp với Box bao ngoài
-        overflow: 'hidden', // Quan trọng: Đảm bảo CardMedia bo góc đúng
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        borderRadius: 3,
+        overflow: "hidden",
+        cursor: "pointer",
+        transition: "0.25s ease",
+        boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
+        ":hover": {
+          transform: "translateY(-4px)",
+          boxShadow: "0 4px 18px rgba(0,0,0,0.12)",
+        },
       }}
     >
-      <CardMedia
-        component="img"
-        image={dish.image}
-        alt={dish.name}
-        sx={{ 
-          height: 180, 
-          objectFit: 'cover', 
-          // Loại bỏ border radius ở đây, để Card bao ngoài quản lý
-          borderTopLeftRadius: 'inherit', 
-          borderTopRightRadius: 'inherit',
-        }}
-        onClick={() => router.push(`/menu/${dish.slug}`)}
-      />
+      {/* IMAGE */}
+      <Box onClick={() => router.push(`/menu/${dish.slug}`)}>
+        <CardMedia
+          component="img"
+          image={dish.image}
+          alt={dish.name}
+          sx={{
+            height: 180,
+            width: "100%",
+            objectFit: "cover",
+          }}
+        />
+      </Box>
 
-      <CardContent 
-        sx={{ 
-          flexGrow: 1, // ⭐️ 3. Cho phép CardContent co giãn chiều cao còn lại
-          pb: 2, 
-          ':last-child': { paddingBottom: 2 } // Đảm bảo padding bottom nhất quán
+      {/* CONTENT */}
+      <CardContent
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          flexGrow: 1,
+          pt: 1.5,
         }}
       >
-        <Typography variant="h4" sx={{ fontSize: '1rem', fontWeight: 700 }}>
+        {/* NAME */}
+        <Typography
+          variant="h6"
+          fontWeight={700}
+          sx={{ cursor: "pointer" }}
+          onClick={() => router.push(`/menu/${dish.slug}`)}
+        >
           {dish.name}
         </Typography>
 
+        {/* PRICE + BUTTONS */}
         <Stack
           direction="row"
           justifyContent="space-between"
-          alignItems="flex-end" // ⭐️ Đảm bảo các button luôn nằm ở cuối Card
-          sx={{ mt: 'auto', paddingTop: 2 }} // mt: 'auto' đẩy phần tử này xuống đáy CardContent
+          alignItems="flex-end"
+          sx={{ marginTop: "auto" }}
         >
-          <Typography sx={{ fontWeight: 700, color: '#ff6600' }}>
-            {dish.price.toLocaleString('vi-VN')}₫
+          <Typography sx={{ fontWeight: 700, color: "#ff6600" }}>
+            {dish.price.toLocaleString("vi-VN")}₫
           </Typography>
 
           <Stack direction="row" spacing={1}>
@@ -67,11 +98,15 @@ export default function DishCard({ dish }: { dish: Dish }) {
             >
               Chi tiết
             </Button>
+
             <Button
               size="small"
               variant="contained"
-              sx={{ backgroundColor: '#ff6600' }} // Dùng màu cam đã thống nhất
-              onClick={() => alert(`Thêm ${dish.name} vào giỏ (demo)`)}
+              sx={{
+                backgroundColor: "#ff6600",
+                ":hover": { backgroundColor: "#e65c00" },
+              }}
+              onClick={handleAddToCart}
             >
               Thêm
             </Button>

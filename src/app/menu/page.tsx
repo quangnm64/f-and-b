@@ -1,48 +1,12 @@
   'use client';
-  import React from 'react';
+  import React, { useMemo } from 'react';
   import dishes from '@/data/dishes';
   import { Box, Typography, Container } from '@mui/material'; // Thêm Container
   import DishCard from '@/components/Menu/DishCard';
   import { useState } from 'react';
 
-  // Giả định categories có sẵn để filter và render nút
-  // (Trong thực tế, bạn nên lấy danh sách này từ dishes hoặc API)
-  const categories = [
-    { id: 'Tất cả', name: 'Tất cả' },
-    { id: '1', name: 'Món Chính' },
-    { id: '2', name: 'Món Khai Vị' },
-    { id: '3', name: 'Đồ Uống' },
-    { id: '4', name: 'Tráng Miệng' },
-  ];
-
-  // --- Component MenuFilter MỚI (để style nút) ---
-  // Thay thế component MenuFilter cũ của bạn
-  function MenuFilter({ selected, onChange }:any) {
-    return (
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center', // Căn giữa các nút lọc
-          flexWrap: 'wrap',
-          gap: { xs: 1, md: 2 }, // Khoảng cách giữa các nút
-          mb: 6, // Khoảng cách bên dưới thanh filter
-        }}
-      >
-        {categories.map((cat) => (
-          <CategoryButton
-            key={cat.id}
-            categoryId={cat.id}
-            categoryName={cat.name}
-            selected={selected === cat.id}
-            onClick={() => onChange(cat.id)}
-          />
-        ))}
-      </Box>
-    );
-  }
-
-  // --- Component Nút Category Riêng Biệt (Dùng để thay đổi background) ---
   import { Button } from '@mui/material';
+  import SearchBar from '@/components/Form/SearchBar';
 
   function CategoryButton({ categoryId, categoryName, selected, onClick }:any) {
     return (
@@ -128,15 +92,32 @@
   // Tách phần logic filter sang client
   function ClientSection() {
     const [cat, setCat] = useState('Tất cả');
+    const [searchTerm, setSearchTerm] = useState('');
+    const handleSearch = (keyword: string) => {
+      setSearchTerm(keyword.toLowerCase());
+    };
+    const filteredDishes = useMemo(() => {
+      let list = dishes;
 
-    const filtered =
-      cat === 'Tất cả' ? dishes : dishes.filter((d) => d.categoryId === cat);
+      // 1. Lọc theo Danh mục (Category Filter)
+      if (cat !== 'Tất cả') {
+          list = list.filter((d) => d.categoryId === cat);
+      }
 
+      // 2. Lọc theo Từ khóa (Search Filter)
+      if (searchTerm.length > 0) {
+          list = list.filter((d) => 
+            // Giả sử món ăn có thuộc tính 'name' để tìm kiếm
+            d.name.toLowerCase().includes(searchTerm) 
+          );
+      }
+
+      return list;
+     }, [cat, searchTerm]);
     return (
       <Box>
         {/* ⭐️ Sử dụng MenuFilter mới với style nút đẹp hơn */}
-        <MenuFilter selected={cat} onChange={setCat} />
-
+        <SearchBar onSearch={handleSearch} />
         {/* Grid món ăn (đã tối ưu lại bố cục) */}
         <Box 
           sx={{ 
@@ -150,7 +131,7 @@
             gap: 4, 
           }}
         >
-          {filtered.map((dish) => (
+          {filteredDishes.map((dish) => (
               // Bọc DishCard trong Box để thêm hiệu ứng Hover đẹp mắt
               <Box
                   key={dish.id}
@@ -172,7 +153,7 @@
           ))}
         </Box>
         
-        {filtered.length === 0 && (
+        {filteredDishes.length === 0 && (
             <Typography 
               variant="h6" 
               sx={{ textAlign: 'center', mt: 6, color: '#999' }}

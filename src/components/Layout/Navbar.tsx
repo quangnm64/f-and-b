@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import {
   AppBar,
@@ -11,6 +11,7 @@ import {
   Button,
   Avatar,
   useMediaQuery,
+  Badge,
 } from '@mui/material';
 
 import MenuIcon from '@mui/icons-material/Menu';
@@ -18,11 +19,14 @@ import SearchIcon from '@mui/icons-material/Search';
 import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { usePathname } from 'next/navigation';
+import { useOrder } from '@/context/OrderContext';
 
 export default function Navbar() {
   const path = usePathname();
   const isMobile = useMediaQuery('(max-width:768px)');
-  
+  const { items } = useOrder();
+  const [openCart, setOpenCart] = useState(false);
+
   return (
     <AppBar
       position="sticky"
@@ -126,58 +130,10 @@ export default function Navbar() {
 
         {/* ACTIONS */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1,
-              px: 1.5,
-              py: 0.5,
-              borderRadius: 999,
-              background: 'rgba(255,255,255,0.2)',
-              border: '1px solid rgba(255,255,255,0.35)',
-              backdropFilter: 'blur(6px)',
-              transition: '.25s',
-              '&:hover': {
-                background: 'rgba(255,255,255,0.3)',
-              },
-              '&::placeholder': {
-                  color: '#fff',
-                  opacity: 0.9,
-              },
-              
-            }}
-          >
-            <SearchIcon sx={{ color: '#fff', fontSize: 22 }} />
-
-            <input
-              type="text"
-              placeholder="Tìm món..."
-              style={{
-                background: 'transparent',
-                border: 'none',
-                outline: 'none',
-                color: '#fff',
-                fontSize: 14,
-                width: 140,
-              }}
-            />
-            
-          </Box>
-
-          <IconButton
-            sx={{
-              ml: 1,
-              color: '#fff',
-              background: 'rgba(255,255,255,0.15)',
-              '&:hover': {
-                background: 'rgba(255,255,255,0.3)',
-                transform: 'rotate(-8deg) scale(1.1)',
-              },
-              transition: '.25s',
-            }}
-          >
-            <ShoppingCartIcon />
+          <IconButton onClick={() => setOpenCart(true)}>
+            <Badge badgeContent={items.length} color="error">
+              <ShoppingCartIcon />
+            </Badge>
           </IconButton>
 
           <IconButton
