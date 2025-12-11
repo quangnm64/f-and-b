@@ -12,7 +12,7 @@ export default function SearchBar({ onSearch }: { onSearch: (keyword: string) =>
     <Box sx={{ width: "100%", mb: 3 }}>
       <TextField
         fullWidth
-        placeholder="Tìm món ăn..."
+        placeholder="Tìm món ăn... "
         value={value}
         onChange={(e) => {
           setValue(e.target.value);
