@@ -5,55 +5,7 @@
   import DishCard from '@/components/Menu/DishCard';
   import { useState } from 'react';
 
-  import { Button } from '@mui/material';
   import SearchBar from '@/components/Form/SearchBar';
-
-  function CategoryButton({ categoryId, categoryName, selected, onClick }:any) {
-    return (
-      <Button
-        variant="contained"
-        onClick={onClick}
-        sx={{
-          minWidth: 100,
-          py: { xs: 1, md: 1.5 },
-          px: { xs: 2, md: 3 },
-          borderRadius: 8, // Bo tròn nút
-          fontWeight: 600,
-          textTransform: 'none',
-          transition: 'all 0.3s cubic-bezier(.4, 0, .2, 1)',
-          
-          // Style Mặc định (Chưa được chọn)
-          backgroundColor: '#ffffff', // Nền trắng
-          color: '#555555', // Chữ xám đậm
-          border: '1px solid #e0e0e0', // Border nhẹ
-          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
-          
-          '&:hover': {
-            backgroundColor: '#ffdbcc', // Màu hồng đào nhạt khi hover
-            color: '#e65c00', // Màu chữ cam khi hover
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-          },
-
-          // ⭐️ Style Khi Được Chọn (SELECTED) - Thay đổi background và color
-          ...(selected && {
-            backgroundColor: '#ff6600', // Màu cam rực rỡ khi được chọn
-            color: '#ffffff', // Chữ trắng
-            border: '1px solid #ff6600',
-            boxShadow: '0 5px 15px rgba(255, 102, 0, 0.35)', // Shadow nổi bật
-            transform: 'translateY(-2px)', // Nhấn nút nổi lên nhẹ
-
-            '&:hover': {
-              backgroundColor: '#e65c00', // Màu cam đậm hơn khi hover
-              boxShadow: '0 5px 15px rgba(255, 102, 0, 0.5)',
-            },
-          }),
-        }}
-      >
-        {categoryName}
-      </Button>
-    );
-  }
-  // -----------------------------------------------------------------
 
   export default function MenuPage() {
     return (
@@ -66,7 +18,7 @@
           pb: 8,
         }}
       >
-        <Container maxWidth="lg"> {/* Dùng Container để căn giữa và giới hạn chiều rộng */}
+        <Container maxWidth="lg"> 
           <Typography 
             variant="h1" 
             sx={{ 
