@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { 
     Box, 
@@ -10,12 +10,12 @@ import {
     IconButton, // ⭐️ Import mới
     InputAdornment // ⭐️ Import mới
 } from "@mui/material";
-import Link from "next/link"; 
-import React, { useState } from 'react'; // ⭐️ Import useState
 
 // ⭐️ Import Icons
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+
+import React, { useState } from 'react'; // ⭐️ Import useState
 
 const PRIMARY_COLOR = "#ff6600"; 
 const TEXT_COLOR = "#3C4A60";    
@@ -39,12 +39,12 @@ const flatInputStyle = {
     },
 };
 
-export default function RegisterPage() {
-    // ⭐️ QUẢN LÝ TRẠNG THÁI HIỂN THỊ MẬT KHẨU
-    const [showPassword, setShowPassword] = useState(true);
+export default function ResetPasswordPage({ params }: any) {
+    // ⭐️ 1. QUẢN LÝ TRẠNG THÁI HIỂN THỊ MẬT KHẨU
+    const [showOldPassword, setShowOldPassword] = useState(true);
+    const [showNewPassword, setShowNewPassword] = useState(true);
     const [showConfirmPassword, setShowConfirmPassword] = useState(true);
 
-    // Hàm chung để toggle state
     const handleClickShowPassword = (setter: React.Dispatch<React.SetStateAction<boolean>>) => {
         setter((show) => !show);
     };
@@ -53,7 +53,7 @@ export default function RegisterPage() {
         event.preventDefault();
     };
 
-    // Hàm render Input Adornment
+    // ⭐️ HÀM RENDER INPUT ADORNMENT CHUNG
     const renderPasswordAdornment = (showState: boolean, setter: React.Dispatch<React.SetStateAction<boolean>>) => (
         <InputAdornment position="end">
             <IconButton
@@ -80,42 +80,54 @@ export default function RegisterPage() {
                 sx={{ 
                     maxWidth: 420, 
                     width: '100%',
-                    pt: { xs: 4, md: 4 },
+                    pt: { xs: 4, md: 10 },
                     pb: { xs: 4, md: 6 },
                     px: { xs: 2, sm: 0}
                 }}
             >
                 <Paper elevation={8} sx={{ p: { xs: 3, md: 5 }, borderRadius: 3, background: '#fff' }}>
-                    <Typography variant="h4" fontWeight={800} mb={4} color={TEXT_COLOR} textAlign="center">
-                        TẠO TÀI KHOẢN
+                    <Typography variant="h4" fontWeight={800} mb={3} color={TEXT_COLOR} textAlign="center">
+                        ĐẶT LẠI MẬT KHẨU
+                    </Typography>
+
+                    <Typography variant="body2" color="#666" mb={4} textAlign="center">
+                        Vui lòng nhập mật khẩu mới và xác nhận để hoàn tất quá trình.
                     </Typography>
 
                     <Stack spacing={2.5}> 
-                        <TextField label="Họ và tên" fullWidth variant="outlined" sx={flatInputStyle} size="medium" />
-                        <TextField label="Email" fullWidth variant="outlined" sx={flatInputStyle} size="medium" />
-                        
-                        {/* ⭐️ TRƯỜNG MẬT KHẨU CHÍNH */}
+                        {/* ⭐️ MẬT KHẨU CŨ */}
                         <TextField 
-                            label="Mật khẩu" 
-                            type={showPassword ? "password":"text"} // Thay đổi type
-                            fullWidth 
-                            variant="outlined" 
-                            sx={flatInputStyle} 
-                            size="medium"
-                            InputProps={{
-                                endAdornment: renderPasswordAdornment(showPassword, setShowPassword)
-                            }}
-                        />
-                        
-                        {/* ⭐️ TRƯỜNG NHẬP LẠI MẬT KHẨU */}
-                        <TextField 
-                            label="Nhập lại mật khẩu" 
-                            type={showConfirmPassword ? "password":"text"} // Thay đổi type
+                            label="Mật khẩu cũ" 
+                            type={showOldPassword ? "password":"text"} // ⭐️ Thay đổi type
                             fullWidth 
                             variant="outlined" 
                             sx={flatInputStyle} 
                             size="medium" 
-                            InputProps={{
+                            InputProps={{ // ⭐️ Thêm InputProps
+                                endAdornment: renderPasswordAdornment(showOldPassword, setShowOldPassword)
+                            }}
+                        />
+                        {/* ⭐️ MẬT KHẨU MỚI */}
+                        <TextField 
+                            label="Mật khẩu mới" 
+                            type={showNewPassword ? "password":"text"} // ⭐️ Thay đổi type
+                            fullWidth 
+                            variant="outlined" 
+                            sx={flatInputStyle} 
+                            size="medium"
+                            InputProps={{ // ⭐️ Thêm InputProps
+                                endAdornment: renderPasswordAdornment(showNewPassword, setShowNewPassword)
+                            }}
+                        />
+                        {/* ⭐️ NHẬP LẠI MẬT KHẨU */}
+                        <TextField 
+                            label="Nhập lại mật khẩu" 
+                            type={showConfirmPassword ? "password":"text"} // ⭐️ Thay đổi type
+                            fullWidth 
+                            variant="outlined"
+                            sx={flatInputStyle} 
+                            size="medium"
+                            InputProps={{ // ⭐️ Thêm InputProps
                                 endAdornment: renderPasswordAdornment(showConfirmPassword, setShowConfirmPassword)
                             }}
                         />
@@ -139,36 +151,9 @@ export default function RegisterPage() {
                                 }
                             }}
                         >
-                            ĐĂNG KÝ
+                            XÁC NHẬN
                         </Button>
                     </Stack>
-
-                    <Box sx={{ mt: 3, pt: 2, borderTop: '1px solid #eee', textAlign: 'center' }}>
-                        <Typography variant="body2" color="#777" mb={1}>
-                            Bạn đã có tài khoản?
-                        </Typography>
-                        <Button
-                            component={Link} 
-                            href="/auth/login"
-                            variant="outlined"
-                            fullWidth
-                            sx={{
-                                borderColor: PRIMARY_COLOR,
-                                color: PRIMARY_COLOR,
-                                py: 1,
-                                fontSize: '0.9rem',
-                                fontWeight: 600,
-                                borderRadius: 1,
-                                textTransform: 'none',
-                                '&:hover': {
-                                    background: `${PRIMARY_COLOR}10`,
-                                    borderColor: PRIMARY_COLOR,
-                                }
-                            }}
-                        >
-                            Đăng nhập ngay
-                        </Button>
-                    </Box>
                 </Paper>
             </Box>
         </Box>

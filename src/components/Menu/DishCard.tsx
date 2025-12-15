@@ -35,7 +35,7 @@ export default function DishCard({ dish }: { dish: Dish }) {
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        borderRadius: 3,
+        borderRadius: 1,
         overflow: "hidden",
         cursor: "pointer",
         transition: "0.25s ease",
