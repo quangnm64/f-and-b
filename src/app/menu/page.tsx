@@ -1,16 +1,14 @@
-// src/app/menu/page.tsx (File gốc của bạn)
-
 'use client';
 import React, { useMemo } from 'react';
 import dishes from '@/data/dishes';
-import { Box, Typography, Container } from '@mui/material';
+import { Box, Typography, Container, Pagination } from '@mui/material';
 import DishCard from '@/components/Menu/DishCard';
 import { useState } from 'react';
 
 import SearchBar from '@/components/Form/SearchBar';
-// ⭐️ IMPORT component mới
 import MenuFilter from '@/components/Menu/MenuFilter'; 
 
+const DISHES_PER_PAGE = 4;
 export default function MenuPage() {
   return (
     <Box
@@ -44,53 +42,63 @@ export default function MenuPage() {
   );
 }
 
-// Tách phần logic filter sang client
 function ClientSection() {
-  // ⭐️ Khởi tạo State cho Category và Search Term
   const [cat, setCat] = useState('Tất cả');
   const [searchTerm, setSearchTerm] = useState('');
-  
-  // Xử lý tìm kiếm
+  const [currentPage, setCurrentPage] = useState(1);
   const handleSearch = (keyword: string) => {
     setSearchTerm(keyword.toLowerCase());
+    setCurrentPage(1)
   };
   
-  // ⭐️ Xử lý thay đổi Category
   const handleCategoryChange = (categoryId: string) => {
     setCat(categoryId);
+    setCurrentPage(1);
   }
 
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setCurrentPage(value);
+    window.scrollTo({ top: 0, behavior: 'smooth' }); 
+  };
+
+  
   const filteredDishes = useMemo(() => {
     let list = dishes;
 
-    // 1. Lọc theo Danh mục (Category Filter)
     if (cat !== 'Tất cả') {
-        // ⭐️ Giả định d.categoryId là string và khớp với id của category
         list = list.filter((d) => d.categoryId === cat); 
     }
 
-    // 2. Lọc theo Từ khóa (Search Filter)
     if (searchTerm.length > 0) {
         list = list.filter((d) => 
-          // Giả sử món ăn có thuộc tính 'name' để tìm kiếm
           d.name.toLowerCase().includes(searchTerm) 
         );
     }
 
     return list;
-   }, [cat, searchTerm]); // ⭐️ Dependency array đã bao gồm cat và searchTerm
-   
+   }, [cat, searchTerm]); 
+  
+  const paginatedData = useMemo(() => {
+      const pageCount = Math.ceil(filteredDishes.length / DISHES_PER_PAGE);
+
+      const startIndex = (currentPage - 1) * DISHES_PER_PAGE;
+      const endIndex = startIndex + DISHES_PER_PAGE;
+
+      const paginatedDishes = filteredDishes.slice(startIndex, endIndex);
+
+      return { paginatedDishes, pageCount };
+      
+  }, [filteredDishes, currentPage]); 
+  const { paginatedDishes, pageCount } = paginatedData;
   return (
     <Box>
       <SearchBar onSearch={handleSearch} />
       
-      {/* ⭐️ THÊM BỘ LỌC CATEGORY MỚI Ở ĐÂY */}
       <MenuFilter 
         currentCategory={cat} 
         onCategoryChange={handleCategoryChange} 
       />
 
-      {/* Grid món ăn (đã tối ưu lại bố cục) */}
       <Box 
         sx={{ 
           display: 'grid', 
@@ -101,10 +109,10 @@ function ClientSection() {
             lg: 'repeat(4, 1fr)', 
           },
           gap: 4, 
+          mb: 5,
         }}
       >
-        {filteredDishes.map((dish) => (
-            // Bọc DishCard trong Box để thêm hiệu ứng Hover đẹp mắt
+        {paginatedDishes.map((dish) => (
             <Box
                 key={dish.id}
                 sx={{
@@ -122,9 +130,20 @@ function ClientSection() {
             >
                 <DishCard dish={dish} />
             </Box>
+            
         ))}
       </Box>
-      
+      {pageCount > 1 && (
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+            <Pagination 
+              count={pageCount}  
+              page={currentPage} 
+              onChange={handlePageChange} 
+              color="primary" 
+              size="large" 
+            />
+          </Box>
+        )}
       {filteredDishes.length === 0 && (
           <Typography 
             variant="h6" 

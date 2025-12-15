@@ -60,7 +60,6 @@ export default function DishCard({ dish }: { dish: Dish }) {
         />
       </Box>
 
-      {/* CONTENT */}
       <CardContent
         sx={{
           display: "flex",
@@ -69,22 +68,30 @@ export default function DishCard({ dish }: { dish: Dish }) {
           pt: 1.5,
         }}
       >
-        {/* NAME */}
         <Typography
           variant="h6"
           fontWeight={700}
-          sx={{ cursor: "pointer" }}
+          sx={{
+            cursor: "pointer",
+            display: '-webkit-box', 
+            WebkitLineClamp: 2,     
+            WebkitBoxOrient: 'vertical', 
+            overflow: 'hidden',        
+            textOverflow: 'ellipsis',  
+            
+            minHeight: '3.0em', 
+            lineHeight: 1.5,
+          }}
           onClick={() => router.push(`/menu/${dish.slug}`)}
         >
           {dish.name}
         </Typography>
 
-        {/* PRICE + BUTTONS */}
         <Stack
           direction="row"
           justifyContent="space-between"
           alignItems="flex-end"
-          sx={{ marginTop: "auto" }}
+          sx={{ marginTop: "20px" }}
         >
           <Typography sx={{ fontWeight: 700, color: "#ff6600" }}>
             {dish.price.toLocaleString("vi-VN")}₫
