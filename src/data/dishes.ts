@@ -36,7 +36,7 @@ const dishes: Dish[] = [
   },
   {
     id: "4",
-    name: "Bánh Mousse Chocolate ",
+    name: "Bánh Mousse Chocolate",
     slug: "banh-mousse-chocolate",
     description: "Mousse chocolate mềm mịn thơm béo phủ lớp cacao đắng nhẹ.",
     price: 55000,
@@ -164,7 +164,7 @@ const dishes: Dish[] = [
       categoryId: "snack",
       isAvailable: true,
   },
-  
+
 ];
 
 export default dishes;

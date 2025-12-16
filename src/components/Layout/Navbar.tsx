@@ -22,13 +22,10 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { usePathname } from 'next/navigation';
 import { useOrder } from '@/context/OrderContext';
 
-// ⭐️ Định nghĩa màu sắc chủ đạo
 const PRIMARY_COLOR = "#ff6600"; 
 const TEXT_COLOR = "#3C4A60";    
 
-// Giả định hook useAuth
 const useAuth = () => {
-    // ⭐️ Đặt giá trị này là false để kiểm tra trạng thái CHƯA ĐĂNG NHẬP
     const isAuthenticated = false; 
     const user = { 
         name: "User", 
@@ -85,7 +82,6 @@ export default function Navbar() {
                     py: 1.2,
                 }}
             >
-                {/* LOGO (Giữ nguyên) */}
                 <Link
                     href="/"
                     style={{
@@ -120,7 +116,6 @@ export default function Navbar() {
                     </strong>
                 </Link>
 
-                {/* MENU (Giữ nguyên) */}
                 <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                     <Stack direction="row" spacing={4}>
                         {[
@@ -167,18 +162,14 @@ export default function Navbar() {
                     </Stack>
                 </Box>
 
-                {/* ACTIONS */}
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    {/* Nút Giỏ hàng (Giữ nguyên) */}
                     <IconButton component={Link} href="/checkout">
                         <Badge badgeContent={cartItemCount} color="error" max={99}>
                             <ShoppingCartIcon sx={{ color: '#fff' }}/>
                         </Badge>
                     </IconButton>
 
-                    {/* ⭐️ LOGIC: HIỂN THỊ AVATAR HOẶC NÚT ĐĂNG NHẬP */}
                     {isAuthenticated ? (
-                        // ĐÃ ĐĂNG NHẬP: Hiển thị Avatar và Menu
                         <IconButton
                             onClick={handleMenu}
                             sx={{
@@ -203,7 +194,6 @@ export default function Navbar() {
                             </Avatar>
                         </IconButton>
                     ) : (
-                        // ⭐️ CHƯA ĐĂNG NHẬP: Hiển thị NÚT ĐĂNG NHẬP
                         <Button
                             component={Link}
                             href="/auth/login"
@@ -230,7 +220,6 @@ export default function Navbar() {
                         </Button>
                     )}
 
-                    {/* MENU DROP-DOWN (Chỉ mở khi isAuthenticated = true) */}
                     <Menu
                         anchorEl={anchorEl}
                         open={open}
@@ -265,7 +254,6 @@ export default function Navbar() {
                         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                     >
-                        {/* Nội dung Menu khi đã đăng nhập */}
                         <MenuItem>
                             <Avatar sx={{ bgcolor: PRIMARY_COLOR }}>{user.initial}</Avatar> 
                             <Stack>
@@ -300,7 +288,6 @@ export default function Navbar() {
                 </Box>
             </Toolbar>
 
-            {/* CSS keyframes */}
             <style jsx global>{`
                 @keyframes logoPulse {
                     0% {
